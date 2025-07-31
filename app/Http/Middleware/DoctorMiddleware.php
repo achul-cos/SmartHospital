@@ -17,7 +17,7 @@ class DoctorMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::guard('doctor')->check()) {
-            return redirect()->route('doctor.login')->with('error', 'Silakan login terlebih dahulu.');
+            return redirect()->route('doctors.login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
         return $next($request);

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('photo')->nullable();
             $table->text('notes')->nullable();
+            $table->string('password')->default(Hash::make('password'));
             $table->timestamps();
         });
     }

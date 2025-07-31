@@ -34,6 +34,7 @@ class PatientSeeder extends Seeder
             'phone_number' => '081234567896',
             'email' => 'jane.smith@email.com',
             'notes' => 'Pasien dengan tekanan darah tinggi',
+            'password' => Hash::make('password'),
         ]);
 
         Patient::create([
@@ -45,6 +46,19 @@ class PatientSeeder extends Seeder
             'phone_number' => '081234567897',
             'email' => 'ahmad.rahman@email.com',
             'notes' => 'Pasien dengan diabetes tipe 2',
+            'password' => Hash::make('password'),
         ]);
+
+        Patient::create([
+            'name' => 'Achul',
+            'card_number' => 'PAT004',
+            'gender' => 'male',
+            'birth_date' => '2005-11-10',
+            'address' => 'Jl. Putri Hijau No 1',
+            'phone_number' => '089668914466',
+            'email' => 'arulnasrullah2468@gmail.com',
+            'notes' => 'Remaja Jompo',
+            'password' => Hash::make('password'),
+        ]);        
     }
 }

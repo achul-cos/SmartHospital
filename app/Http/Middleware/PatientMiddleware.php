@@ -17,7 +17,7 @@ class PatientMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::guard('patient')->check()) {
-            return redirect()->route('patient.login')->with('error', 'Silakan login terlebih dahulu.');
+            return redirect()->route('patients.login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
         return $next($request);

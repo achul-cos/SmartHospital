@@ -19,18 +19,18 @@
 
         <!-- Login Form -->
         <div class="bg-white rounded-lg shadow-lg p-8">
-            <form method="POST" action="" class="space-y-6">
+            <form method="POST" action="{{ route('admins.login.submit') }}" class="space-y-6">
                 @csrf
                 
                 <div>
-                    <label for="identifier" class="block text-sm font-medium text-gray-700 mb-2">
-                        Email / Nama / Nomor Pegawai
+                    <label for="login" class="block text-sm font-medium text-gray-700 mb-2">
+                        Email / Nomor Pegawai
                     </label>
-                    <input id="identifier" name="identifier" type="text" required 
+                    <input id="login" name="login" type="text" required 
                            class="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
-                           placeholder="Masukkan email, nama, atau nomor pegawai"
-                           value="{{ old('identifier') }}">
-                    @error('identifier')
+                           placeholder="Masukkan email atau nomor pegawai"
+                           value="{{ old('login') }}">
+                    @error('login')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
@@ -94,11 +94,11 @@
                 </a>
             </p>
             <div class="flex justify-center space-x-4">
-                <a href="" class="text-sm text-gray-500 hover:text-gray-700">
+                <a href="{{ route('doctors.login') }}" class="text-sm text-gray-500 hover:text-gray-700">
                     Login Dokter
                 </a>
                 <span class="text-gray-300">|</span>
-                <a href="" class="text-sm text-gray-500 hover:text-gray-700">
+                <a href="{{ route('patients.login') }}" class="text-sm text-gray-500 hover:text-gray-700">
                     Login Pasien
                 </a>
             </div>
