@@ -16,6 +16,9 @@ class PatientsLoginController extends Controller
 {
     public function index()
     {
+        if (auth('patient')->check()) {
+            return redirect()->route('patients.dashboard');
+        }
         return view('patients.auth.login');
     }
 

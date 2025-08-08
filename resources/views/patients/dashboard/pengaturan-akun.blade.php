@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.patients_dashboard')
 
 @section('title', 'Dashboard Dokter - Smart Hospital')
 

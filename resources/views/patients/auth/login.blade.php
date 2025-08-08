@@ -201,12 +201,16 @@
 @push('scripts')
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+function initLoginPage() {
+    console.log("[Init] Login Page script dijalankan");
+
+    // === Password Toggle ===
     const passwordToggle = document.querySelector('.password-toggle');
     const passwordInput = document.getElementById('password');
     const icon = passwordToggle?.querySelector('svg');
-    if (passwordToggle) {
-        passwordToggle.addEventListener('click', function () {
+
+    if (passwordToggle && passwordInput) {
+        passwordToggle.addEventListener('click', () => {
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>`;
@@ -218,10 +222,22 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // === OTP Login Toggle ===
     const showOtpLogin = document.getElementById('show-otp-login');
     const showPasswordLogin = document.getElementById('show-password-login');
     const passwordLogin = document.getElementById('password-login');
     const otpLogin = document.getElementById('otp-login');
+
+    showOtpLogin?.addEventListener('click', () => {
+        passwordLogin.classList.add('hidden');
+        otpLogin.classList.remove('hidden');
+    });
+    showPasswordLogin?.addEventListener('click', () => {
+        otpLogin.classList.add('hidden');
+        passwordLogin.classList.remove('hidden');
+    });
+
+    // === OTP Form Handling ===
     const sendOtpForm = document.getElementById('send-otp-form');
     const verifyOtpForm = document.getElementById('verify-otp-form');
     const sendOtpBtn = document.getElementById('send-otp');
@@ -233,9 +249,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const otpCodeInput = document.getElementById('otp_code');
     const otpIdentifier = document.getElementById('otp_identifier');
     let countdown = null;
-
-    showOtpLogin?.addEventListener('click', () => { passwordLogin.classList.add('hidden'); otpLogin.classList.remove('hidden'); });
-    showPasswordLogin?.addEventListener('click', () => { otpLogin.classList.add('hidden'); passwordLogin.classList.remove('hidden'); });
 
     function startOtpTimer(duration) {
         let timer = duration;
@@ -250,26 +263,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 clearInterval(countdown);
                 otpTimerWrap.classList.add('hidden');
                 resendBtn.classList.remove('hidden');
-                const identifier = document.getElementById('otp_identifier').value;
-                fetch("{{ route('patients.otp.send') }}", {
-                    method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                    body: JSON.stringify({ identifier })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.message) {
-                        showFlashModal("Kode OTP baru telah dikirim otomatis.", 'success');
-                        startOtpTimer(250);
-                    }
-                })
-                .catch(err => console.error("Gagal auto resend OTP:", err));
             }
         }, 1000);
     }
 
     sendOtpForm?.addEventListener('submit', function (e) {
         e.preventDefault();
-        const identifier = document.getElementById('otp_identifier').value;
+        const identifier = otpIdentifier.value;
         if (!identifier) return showFlashModal('Silakan masukkan email atau nomor telepon', 'error');
         sendOtpBtn.disabled = true;
         sendOtpBtn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -277,7 +277,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>Mengirim OTP...`;
         fetch("{{ route('patients.otp.send') }}", {
-            method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
             body: JSON.stringify({ identifier })
         })
         .then(async res => {
@@ -303,13 +304,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     verifyOtpForm?.addEventListener('submit', function (e) {
         e.preventDefault();
-        const identifier = document.getElementById('otp_identifier').value;
+        const identifier = otpIdentifier.value;
         const otpCode = otpCodeInput.value;
         if (!otpCode) return showFlashModal('Silakan masukkan kode OTP', 'error');
         verifyOtpBtn.disabled = true;
         verifyOtpBtn.innerHTML = `Memverifikasi...`;
         fetch("{{ route('patients.verifyOtp') }}", {
-            method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
             body: JSON.stringify({ identifier, otp_code: otpCode })
         })
         .then(async res => {
@@ -330,9 +332,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    otpCodeInput?.addEventListener('input', function () { this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6); });
-});
+    otpCodeInput?.addEventListener('input', function () { 
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6); 
+    });
+}
+// Jalankan saat pertama kali load
+document.addEventListener('DOMContentLoaded', initLoginPage);    
 </script>
 
 @endpush
+
 @endsection

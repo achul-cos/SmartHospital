@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Auth;
 class DoctorsLoginController extends Controller
 {
     public function index() {
+        if (auth('doctor')->check()) {
+            return redirect()->route('doctors.dashboard');
+        }
+
         return view('doctors.auth.login');
     }
 

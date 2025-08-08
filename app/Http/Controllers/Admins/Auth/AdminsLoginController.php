@@ -10,6 +10,9 @@ class AdminsLoginController extends Controller
 {
     // Menampilkan halaman login
     public function index() {
+        if (auth('admin')->check()) {
+            return redirect()->route('admins.dashboard');
+        }
         return view('admins.auth.login');
     }
 

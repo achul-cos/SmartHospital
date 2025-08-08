@@ -13,11 +13,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Call custom seeders
+        // Call custom seeders in order
         $this->call([
             AdminSeeder::class,
             DoctorSeeder::class,
+            DoctorScheduleSeeder::class,
             PatientSeeder::class,
+            AppointmentSeeder::class,
+            DoctorAttendanceSeeder::class,
+            RevenueSeeder::class,
+            ActivitySeeder::class,
+            MedicalRecordSeeder::class,
+            PrescriptionSeeder::class,
+            AdminAssignmentSeeder::class,
         ]);
     }
 }

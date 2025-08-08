@@ -45,6 +45,11 @@
 </head>
 <body class="font-sans antialiased h-full bg-gray-50">
 
+    <!-- Page Loading Indicator -->
+    <div id="loading-indicator" class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-75 hidden">
+        <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+    </div>
+
     <!-- Navigation -->
     <nav class="bg-white border-b border-gray-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

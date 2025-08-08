@@ -32,4 +32,28 @@ class Patient extends Authenticatable
         'password' => 'hashed',
         'birth_date' => 'date',
     ];
+
+    // Relationships
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
+
+    public function medicalRecords()
+    {
+        return $this->hasMany(MedicalRecord::class);
+    }
+
+    public function prescriptions()
+    {
+        return $this->hasMany(Prescription::class);
+    }
+
+    // Scopes
+    public function scopeTodayAppointments($query)
+    {
+        return $query->whereHas('appointments', function($q) {
+            $q->whereDate('appointment_date', today());
+        });
+    }
 }
