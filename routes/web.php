@@ -57,6 +57,29 @@ Route::prefix('admin')->group(function () {
 
             //Dashboard - Pasien - Admin
             Route::get('/pasien', [AdminsDashboardPasienController::class, 'index'])->name('admins.dashboard.pasien');
+            Route::post('/pasien', [AdminsDashboardPasienController::class, 'store'])->name('admins.dashboard.pasien.store');
+            Route::get('/pasien/{patient}', [AdminsDashboardPasienController::class, 'show'])->name('admins.dashboard.pasien.show');
+            Route::put('/pasien/{patient}', [AdminsDashboardPasienController::class, 'update'])->name('admins.dashboard.pasien.update');
+            Route::delete('/pasien/{patient}', [AdminsDashboardPasienController::class, 'destroy'])->name('admins.dashboard.pasien.destroy');
+
+            // Direct patient to doctor (create appointment)
+            Route::post('/pasien/{patient}/appointment', [AdminsDashboardPasienController::class, 'createAppointment'])->name('admins.dashboard.pasien.appointment.store');
+
+            // Admin creates medical record for patient
+            Route::post('/pasien/{patient}/medical-record', [AdminsDashboardPasienController::class, 'createMedicalRecord'])->name('admins.dashboard.pasien.medical-record.store');
+
+            // API: return medical record JSON for modal
+            Route::get('/pasien/{patient}/medical-record/{record}/json', [AdminsDashboardPasienController::class, 'medicalRecordJson'])->name('admins.dashboard.pasien.medical-record.json');
+
+            // Update / Delete medical record
+            Route::put('/pasien/{patient}/medical-record/{record}', [AdminsDashboardPasienController::class, 'updateMedicalRecord'])->name('admins.dashboard.pasien.medical-record.update');
+            Route::delete('/pasien/{patient}/medical-record/{record}', [AdminsDashboardPasienController::class, 'deleteMedicalRecord'])->name('admins.dashboard.pasien.medical-record.destroy');
+
+            // Show single medical record detail for a patient
+            Route::get('/pasien/{patient}/medical-record/{record}', [AdminsDashboardPasienController::class, 'showMedicalRecord'])->name('admins.dashboard.pasien.medical-record.show');
+
+            // View collective medical records for admin
+            Route::get('/pasien/medical-records', [AdminsDashboardPasienController::class, 'allMedicalRecords'])->name('admins.dashboard.pasien.medical-records');
 
             //Dashboard - Dokter - Admin
             Route::get('/dokter', [AdminsDashboardDokterController::class, 'index'])->name('admins.dashboard.dokter');
